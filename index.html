@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dessert Ordering App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="img/logo.jpeg" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <main class="product-list-container">
+            <h1 class="page-title">Desserts</h1>
+            <div id="product-grid" class="product-grid">
+                <!-- Products will be populated here -->
+            </div>
+        </main>
+        
+        <aside class="cart-sidebar">
+            <div class="cart-card">
+                <h2 class="cart-title">Your Cart (<span id="cart-count">0</span>)</h2>
+                
+                <div id="cart-empty-state" class="cart-empty-state">
+                    <img src="./assets/illustration-empty-cart.svg" alt="Empty Cart" class="empty-cart-img">
+                    <p class="empty-cart-text">Your added items will appear here</p>
+                </div>
+
+                <div id="cart-items-container" class="cart-items-container hidden">
+                    <ul id="cart-list" class="cart-list">
+                        <!-- Cart items will go here -->
+                    </ul>
+                    <div class="cart-total-section">
+                        <p class="order-total-label">Order Total</p>
+                        <p class="order-total-amount" id="cart-total">$0.00</p>
+                    </div>
+                    <div class="carbon-neutral-notice">
+                        <img src="./assets/icon-carbon-neutral.svg" alt="tree">
+                        <p>This is a <strong>carbon-neutral</strong> delivery</p>
+                    </div>
+                    <button id="confirm-order-btn" class="confirm-order-btn">Confirm Order</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div id="confirmation-modal" class="modal hidden">
+        <div class="modal-content">
+            <img src="./assets/icon-order-confirmed.svg" alt="Confirmed" class="confirmed-icon">
+            <h2 class="modal-title">Order Confirmed</h2>
+            <p class="modal-subtitle">We hope you enjoy your food!</p>
+            
+            <div class="modal-order-summary">
+                <ul id="modal-cart-list" class="modal-cart-list">
+                    <!-- Summary items -->
+                </ul>
+                <div class="modal-order-total">
+                    <p>Order Total</p>
+                    <p class="total-price" id="modal-total-price">$0.00</p>
+                </div>
+            </div>
+
+            <button id="start-new-order-btn" class="start-new-order-btn">Start New Order</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
