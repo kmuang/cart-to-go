@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Order desserts online with secure card checkout.">
+    <meta name="theme-color" content="#c73a0f">
+    <title>Cart to Go</title>
+    <link rel="icon" href="/img/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/img/favicon-192.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://sandbox.web.squarecdn.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <main id="product-section" class="product-list-container">
+            <header class="page-header">
+                <img class="brand-logo" src="/img/logo-round-v4.webp" alt="KM logo" width="48" height="48">
+                <h1 class="page-title">Desserts</h1>
+            </header>
+            <div id="product-grid" class="product-grid" aria-busy="true">
+                <div class="product-card skeleton-card" aria-hidden="true"><div class="image-container loading"></div><span class="skeleton-line"></span><span class="skeleton-line short"></span></div>
+                <div class="product-card skeleton-card" aria-hidden="true"><div class="image-container loading"></div><span class="skeleton-line"></span><span class="skeleton-line short"></span></div>
+                <div class="product-card skeleton-card" aria-hidden="true"><div class="image-container loading"></div><span class="skeleton-line"></span><span class="skeleton-line short"></span></div>
+            </div>
+            <details id="photo-credits" class="photo-credits" hidden>
+                <summary>Photo credits</summary>
+                <ul id="photo-credits-list"></ul>
+            </details>
+        </main>
+
+        <aside id="cart-sidebar" class="cart-sidebar" aria-label="Shopping cart">
+            <div class="cart-card">
+                <div class="cart-header">
+                    <h2 class="cart-title">Your Cart (<span id="cart-count">0</span>)</h2>
+                    <button id="close-cart-btn" class="close-cart-btn" type="button" aria-label="Close cart">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 10 10"><path fill="currentColor" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>
+                    </button>
+                </div>
+
+                <div id="cart-empty-state" class="cart-empty-state">
+                    <img src="/assets/illustration-empty-cart.svg" alt="" width="128" height="128" class="empty-cart-img">
+                    <p class="empty-cart-text">Your added items will appear here</p>
+                </div>
+
+                <div id="cart-items-container" class="cart-items-container hidden">
+                    <ul id="cart-list" class="cart-list"></ul>
+                    <div class="price-breakdown">
+                        <div class="price-row"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+                        <div class="price-row"><span id="cart-tax-label">Estimated tax</span><span id="cart-tax">$0.00</span></div>
+                    </div>
+                    <div class="cart-total-section">
+                        <p class="order-total-label">Order Total</p>
+                        <p class="order-total-amount" id="cart-total">$0.00</p>
+                    </div>
+                    <div class="carbon-neutral-notice">
+                        <img src="/assets/icon-carbon-neutral.svg" alt="" width="20" height="20">
+                        <p>This is a <strong>carbon-neutral</strong> delivery</p>
+                    </div>
+                    <button id="confirm-order-btn" class="confirm-order-btn" type="button">Confirm Order</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <button id="mobile-cart-btn" class="mobile-cart-bar" type="button" aria-controls="cart-sidebar" aria-expanded="false" hidden>
+        <span><span id="mobile-cart-count">0</span> items in cart</span>
+        <span class="mobile-cart-total" id="mobile-cart-total">$0.00</span>
+    </button>
+
+    <p id="cart-live" class="visually-hidden" role="status" aria-live="polite"></p>
+
+    <dialog id="payment-modal" class="modal" aria-labelledby="payment-title">
+        <div class="modal-content">
+            <h2 id="payment-title" class="modal-title">Checkout</h2>
+            <p class="modal-subtitle">Review your order and enter your card details.</p>
+
+            <ul id="payment-items" class="summary-list" aria-label="Order items"></ul>
+            <div class="price-breakdown">
+                <div class="price-row"><span>Subtotal</span><span id="payment-subtotal">$0.00</span></div>
+                <div class="price-row"><span id="payment-tax-label">Estimated tax</span><span id="payment-tax">$0.00</span></div>
+                <div class="price-row total-row"><span>Total</span><span id="payment-total">$0.00</span></div>
+            </div>
+
+            <section class="payment-details" aria-labelledby="payment-details-title">
+                <h3 id="payment-details-title" class="payment-details-title">Card details</h3>
+                <p class="payment-details-hint">Enter your card number, expiration date, security code, and billing ZIP code.</p>
+                <div id="payment-status" class="payment-status" role="status">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span id="payment-status-text">Loading secure payment form…</span>
+                    <button id="payment-retry-btn" class="retry-btn hidden" type="button">Try again</button>
+                </div>
+                <div id="card-container" aria-label="Secure card payment details"></div>
+                <p class="payment-security-note">Your card details are securely processed by Square and are not stored by this site.</p>
+            </section>
+            <p id="payment-error" class="payment-error hidden" role="alert"></p>
+
+            <button id="pay-btn" class="primary-btn" type="button" disabled>
+                <span class="spinner hidden" aria-hidden="true"></span>
+                <span id="pay-btn-label">Pay Now</span>
+            </button>
+            <button id="cancel-payment-btn" class="cancel-payment-btn" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <dialog id="confirmation-modal" class="modal" aria-labelledby="confirmation-title">
+        <div class="modal-content">
+            <img src="/assets/icon-order-confirmed.svg" alt="" width="40" height="40" class="confirmed-icon">
+            <h2 id="confirmation-title" class="modal-title">Order Confirmed</h2>
+            <p class="modal-subtitle">We hope you enjoy your food!</p>
+
+            <p id="receipt" class="receipt hidden">
+                <span>Order ID: <code id="receipt-id"></code></span>
+                <a id="receipt-link" class="receipt-link hidden" target="_blank" rel="noopener noreferrer">View receipt</a>
+            </p>
+
+            <div class="modal-order-summary">
+                <ul id="modal-cart-list" class="summary-list" aria-label="Order items"></ul>
+                <div class="price-breakdown">
+                    <div class="price-row"><span>Subtotal</span><span id="modal-subtotal">$0.00</span></div>
+                    <div class="price-row"><span id="modal-tax-label">Estimated tax</span><span id="modal-tax">$0.00</span></div>
+                </div>
+                <div class="modal-order-total">
+                    <p>Order Total</p>
+                    <p class="total-price" id="modal-total-price">$0.00</p>
+                </div>
+            </div>
+
+            <button id="start-new-order-btn" class="primary-btn" type="button">Start New Order</button>
+        </div>
+    </dialog>
+</body>
+</html>
